@@ -4,10 +4,17 @@ import java.util.Iterator;
 public class Interprete {
 	private ArrayList<Integer> datosNumericos;
 	private int resultado;
+	private String Programa;
 	
 	public Interprete() {
 		datosNumericos = new ArrayList<Integer>();
-		
+		Programa = "";
+	}
+
+	
+	
+	public void leerPrograma() {
+		Programa = LeerPrograma.txtRead();
 	}
 
 	private boolean isOperator(String operator) {
@@ -28,7 +35,7 @@ public class Interprete {
 	
 	public int readData(String entry) {
 		String[] datosTotales = entry.replaceAll(" ", "").split("");
-		String operando = "";
+		
 		for (int i = 0; i < datosTotales.length; i++) {
 			if(isOperator(datosTotales[i])) {
 				if(isNumber(datosTotales[i+1]) && isNumber(datosTotales[i+2])) {
