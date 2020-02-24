@@ -11,11 +11,6 @@ public class Interprete {
 		Programa = "";
 	}
 
-	
-	
-	public void leerPrograma() {
-		Programa = LeerPrograma.txtRead();
-	}
 
 	private boolean isOperator(String operator) {
 		
@@ -34,18 +29,71 @@ public class Interprete {
 	}
 	
 	public int readData(String entry) {
-		String[] datosTotales = entry.replaceAll(" ", "").split("");
+		String[] datosTotales = entry.split("");
+		ArrayList<Integer> numeros = new ArrayList<Integer>();
+		String operador = "";
 		
 		for (int i = 0; i < datosTotales.length; i++) {
-			if(isOperator(datosTotales[i])) {
-				if(isNumber(datosTotales[i+1]) && isNumber(datosTotales[i+2])) {
-					resultado= Integer.parseInt(datosTotales[i+1]) + Integer.parseInt(datosTotales[i+2]);
-				}
+			
+			if (isOperator(datosTotales[i])) {
+				operador = datosTotales[i];
 			}
 			
+			if (isNumber(datosTotales[i])) {
+				numeros.add(Integer.parseInt(datosTotales[i]));
+			}
 		}  
+		
+		resultado = operar(operador,numeros);
 		
 		 return resultado;
 	}
+	
+	private int operar(String op, ArrayList<Integer> data) {
+		int resultado = 0;
+		Integer[] dat = new Integer[data.size()];
+		
+		for (int i = 0; i<data.size();i++) {
+			dat[i] = data.get(i);
+		}
+		
+		switch(op) {
+		
+		case "+":
+			resultado = Calculos.suma(dat);
+			break;
+		case "-":
+			resultado = Calculos.resta(dat);
+			break;
+		case "*":
+			resultado = Calculos.multiplicacion(dat);
+			break;
+		case "/":
+			resultado = Calculos.division(dat);
+			break;
+		}
+		return resultado;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }
