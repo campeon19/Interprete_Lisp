@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -14,21 +15,21 @@ public class LeerPrograma {
 	 * Metodo que devuelve un string de lo leido
 	 * @return
 	 */
-	public static String txtRead() {
+	public static ArrayList<String> txtRead() {
 		
 		File archivo = null;
 		
 		try {
-			archivo = new File(getPath());
+			archivo = new File("C:\\Users\\andre\\Desktop\\programa.txt");
 		}catch(Exception ec) {
-			return "";
+			return null;
 		}
 		
 		
 		FileReader fr;
 		BufferedReader br;
 		
-		String leido = "";
+		ArrayList<String> lineas = new ArrayList<String>();
 		try {
 			
 			fr = new FileReader(archivo);
@@ -37,7 +38,7 @@ public class LeerPrograma {
 			String linea = "";
 			
 			while((linea = br.readLine()) != null) {
-				leido = leido + linea;
+				lineas.add(linea);
 			}
 			
 			
@@ -50,7 +51,7 @@ public class LeerPrograma {
 			JOptionPane.showMessageDialog(null, "Ha sucedido un error leyendo el archivo " + e);
 		}
 		
-		return leido;
+		return lineas;
 	}
 	
 
