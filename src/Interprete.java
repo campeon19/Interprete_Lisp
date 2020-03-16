@@ -37,7 +37,7 @@ public class Interprete {
 			}
 		}
 		for (int i = 0;i<temp.size();i++) {
-			if (temp.get(i).length() ==0) {
+			if (temp.get(i).length() == 0) {
 				temp.remove(i);
 			}
 		}
