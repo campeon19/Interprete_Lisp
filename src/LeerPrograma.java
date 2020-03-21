@@ -20,7 +20,7 @@ public class LeerPrograma {
 		File archivo = null;
 		
 		try {
-			archivo = new File("C:\\Users\\andre\\Desktop\\Proyecto1Datos-master\\test.lisp");
+			archivo = new File("Farhenheit y Celcius.lisp");
 		}catch(Exception ec) {
 			return null;
 		}
