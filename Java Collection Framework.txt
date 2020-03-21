@@ -6,14 +6,17 @@ almacena no debe ser declarado desde un principio. En otras palabras, es
 dinámico. Nosotros lo utilizamos porque es mucho más fácil trabajar con estas
 por su ventaja de no tener limites con el tamaño.
 
+
 2. Arrays: A pesar de que el ArrayList es mucho más fácil, fue necesario en
 algunas ocaciones utilizar arrays para limitar el espacio. También fue
 necesario porque necesitabamos recorrer las listas con for y es mucho más
 fácil hacerlo con un array que con un ArrayList.
 
+
 3. Stack: Debido a sus características, esta clase fue indispensable para
 poder implementar las operaciones aritméticas del programa, pues este debía
 ser capaz de leer Prefix.
+
 
 4. Hashmaps: También fue necesario utilizar mapas, en concreto hashmaps,
 gracias a su característica para almacenar llave y valor en una lista. Se 
