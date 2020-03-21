@@ -1,11 +1,16 @@
 import java.io.ObjectInputStream.GetField;
 import java.util.HashMap;
+import Operadores.operadorFactory;
+import Modelos.*;
+import java.util.*;
 
-public class Function {
+
+public class Function implements Functionality{
 	private String args0;
 	private String functionName;
 	private String parameter;
 	HashMap<String,String> CONDS =new HashMap<String,String>();
+	private operadorFactory oF = new operadorFactory();
 	
 	
 	public Function(String n) {
@@ -39,76 +44,162 @@ public class Function {
 		
 	}
 	
-	public int getValueFunction(String instrucciones) {
-		if(Integer.parseInt(instrucciones.replaceAll(functionName, "").replaceAll(" ", "").replaceAll("(", "").replaceAll(")", ""))==1 ||Integer.parseInt(instrucciones.replaceAll(functionName, "").replaceAll(" ", "").replaceAll("(", "").replaceAll(")", ""))==0) {
-	    	return 1;
-		}
+	
+	
+	public int getValueFunction(int instrucciones) {
 		
-	//	for(HashMap.Entry<String, String> entry : CONDS.entrySet()) {
+		int Resultado = 0;
+		boolean verificador = true;
+		
+		
+		for(Map.Entry<String, String> entry : CONDS.entrySet()) {
+
+			if(entry.getKey().equals("ELSE")  && verificador) {
+				//+(FIBONACCI(-N1))(FIBONACCI(-N2))
+				
+				
+				if(entry.getValue().contains(functionName)) {  //verifica si existe recursion
+					String operador = "" + entry.getValue().charAt(0);
+					String valueElse = entry.getValue().substring(1); //(FIBONACCI(-N1))(FIBONACCI(-N2))
+					valueElse = valueElse.replaceAll(functionName, ""); //((-N1))((-N2))
+					valueElse = valueElse.replaceAll("(", "").replaceAll(parameter, ""); //-1))-2))
+					String arg1 = "("+ valueElse.charAt(0)+ " "+ instrucciones + " ";  // esto seria tipo "(+ 5 "
+					valueElse = valueElse.substring(1); //1))-2))
+					
+					while(!(Character.toString(valueElse.charAt(0)).equals(")"))) { 
+						arg1 += valueElse.charAt(0);   // va concatenando el numero
+						
+						
+						valueElse = valueElse.substring(1); //aqui quita el caracter inicial para evitar while infinito
+					}
+					//Resultado:
+					//Operacion1 = (+ 5 1
+					//valueElse= ))-2))
+					
+					arg1 += ")"; //(+ 5 1)
+					
+					valueElse = valueElse.replaceAll(")", ""); //-2
+					String arg2 = "(" + valueElse.charAt(0) +" "+ instrucciones + " ";//"(- 5 "
+					valueElse = valueElse.substring(1); //2
+					
+					arg2 += valueElse + ")";  //(- 5 2)
+					
+					String operador1;
+					String operador2;
+					Object val1, val2, val3, val4;
+					Stack<String> x1 = defOperation(arg1);
+					Stack<String> x2 = defOperation(arg2);
+					operador1 = x1.firstElement().trim();
+					operador2 = x2.firstElement().trim();
+					val1 = getParse(x1.get(1).trim());
+					val2 = getParse(x1.get(2).trim());
+					val3 = getParse(x2.get(1).trim());
+					val4 = getParse(x2.get(2).trim());
+
+					
+					Object a1 = operadorFactory.getOp(operador1).getResult(val1, val2); //+getResult(defOperation(arg1));
+					Object a2 = operadorFactory.getOp(operador2).getResult(val3, val4);//+getResult(defOperation(arg1));
+
+					int v1 = (int) a1;
+					int v2 = (int) a2;
+					
+					
+					
+					Resultado = getValueFunction(v1) +getValueFunction(v2);
+					return getValueFunction(v1) +getValueFunction(v2);		
+				}			
+			}
+			
+			if(!(entry.getKey().equals("ELSE")) && verificador) {
+				//=N1
+				if(Character.toString(entry.getKey().charAt(0)).equals("=")) {
+					String comparing = entry.getKey().replaceAll(parameter, "").replaceAll("=", "");
+					if(instrucciones==Integer.parseInt(comparing)) 
+					{
+						Resultado = Integer.parseInt(entry.getValue());
+						verificador = false;
+						
+						
+						return Integer.parseInt(entry.getValue());
+					}	
+				}
+			}
 			
 			
-			
-			
-			
-			
-			
-			/**if(Character.getNumericValue(entry.getKey().charAt(entry.getKey().length()-1)) 
-	    	== Integer.parseInt(instrucciones.replaceAll(functionName, "").replaceAll(" ", "").replaceAll("(", "").replaceAll(")", ""))) {
-	    		return Integer.parseInt(entry.getValue());
-	    	}
-		    if(entry.getKey().equals("ELSE")) {
-		    	
-		    }
-		    else {
-		    	
-		    	
-		    	return 1;
-		    	
-		    	
-		    	//lo de abajo siempre va a dar 1
-		    	/**if(Character.getNumericValue(entry.getKey().charAt(entry.getKey().length()-1)) 
-		    	== Integer.parseInt(instrucciones.replaceAll(functionName, "").replaceAll(" ", "").replaceAll("(", "").replaceAll(")", ""))) {
-		    		return Integer.parseInt(entry.getValue());**/
-		    	
-		   // }
+		}
+		return Resultado;
+		
 		    
 
 		 
 		
 		
-		else {
-			
-			String fibo = CONDS.get("ELSE").replaceAll(functionName, "").replaceAll(" ", "").replaceAll("(", "").replaceAll(")", "");
-			String arg1 = "("+fibo.charAt(0)+" "+fibo.charAt(1)+" "+fibo.charAt(2)+")";
-			String arg2 = "("+fibo.charAt(2)+" "+fibo.charAt(4)+" "+fibo.charAt(5)+")";
-			arg1.replaceAll(parameter, instrucciones.replaceAll(functionName, "").replaceAll(" ", "").replaceAll("(", "").replaceAll(")", ""));
-			arg2.replaceAll(parameter, instrucciones.replaceAll(functionName, "").replaceAll(" ", "").replaceAll("(", "").replaceAll(")", ""));
-			
-			int a1 = 0;//+getResult(defOperation(arg1));
-			int a2 = 0;//+getResult(defOperation(arg1));
-			
-				
-			
-			return a1+a2;
-			
-			
-			
-		}
+		
 		
 		
 		
 		
 	}
+
+	private Object getParse(String number) {
+		try {
+			return  Integer.parseInt(number);
+		}catch(Exception e) {}
+		try {
+			return  Float.parseFloat(number);
+		}catch(Exception e) {}
+		
+		return null;
+	}
+
+	private Stack<String> defOperation(String inst) {
+		Stack<String>temp =  new Stack<String>();
+		String[] split = inst.split("");
+		split[0] = "";
+		split[split.length - 1] = "";
+		int pi = 0;
+		int pd = 0;
+		String txt = "";
+		for (String jk: split) {
+			if (jk.equals("(")) 
+				pi ++;
+			if (jk.equals(")"))
+				pd ++;
+			if (!jk.equals("(") && !jk.equals(")")) {
+				txt += jk;
+			}
+			if ((jk.equals("") || jk.equals(" ")) && txt.length() > 0 && pi == 0 && isText(txt)) {
+				temp.add(txt.trim());
+				txt = "";
+			}
+			if (pi == pd && pi>0 && isText(txt)) {
+				temp.add(txt.trim());
+				txt = "";
+				pi = 0;
+				pd = 0;
+			}
+		}
+		return temp;
+	}
+
+	private boolean isText(String s) {
+		int i = 0;
+		for (String h: s.split("")) {
+			if (!h.equals(" ")) {
+				i++;
+			}
+		}
+		if (i>0) {
+			return true;
+		}
+		return false;
+	}
 	
 	
 	
-	
+	@Override
 	public Object MakeFunction(String[] params) {
-		
-		
-		
-		
-		return getValueFunction(params[0]);
+		return Integer.toString(getValueFunction(Integer.parseInt(params[0])));
 	}
 	
 	
@@ -147,7 +238,9 @@ public class Function {
 				nombreCond += instructions.charAt(i+1);
 				nombreCond += instructions.charAt(i+2);
 				nombreCond += instructions.charAt(i+3);
+				if (nombreCond.equals("COND")) {
 				condEnd = i+4;   // apunta una casilla ADELANTE para ver si ya paso COND
+				}
 				//isCondFinish = false;
 				
 			}
@@ -216,5 +309,9 @@ public class Function {
 		
 	}
 	
-
+	
+	@Override
+	public String getNombre() {
+		return functionName;
+	}
 }
